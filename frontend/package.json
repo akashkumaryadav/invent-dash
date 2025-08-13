@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
+    "@tanstack/react-table": "^8.21.3",
     "axios": "^1.11.0",
     "chart.js": "^4.5.0",
     "react": "^19.1.1",
