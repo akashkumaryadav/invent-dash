@@ -18,17 +18,30 @@ export default function AddItemForm() {
   };
 
   return (
-    <form onSubmit={onSubmit} style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-      <input placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
+    <form onSubmit={onSubmit} className="form-inline">
       <input
+        className="input"
+        placeholder="Name"
+        aria-label="Item name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <input
+        className="input w-24"
         placeholder="Quantity"
         type="number"
+        aria-label="Item quantity"
         value={quantity}
         onChange={(e) => setQuantity(Number(e.target.value))}
-        style={{ width: 100 }}
       />
-      <input placeholder="Category" value={category} onChange={(e) => setCategory(e.target.value)} />
-      <button type="submit">Add</button>
+      <input
+        className="input"
+        placeholder="Category"
+        aria-label="Item category"
+        value={category}
+        onChange={(e) => setCategory(e.target.value)}
+      />
+      <button type="submit" className="btn primary">Add</button>
     </form>
   );
 }

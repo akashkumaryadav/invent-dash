@@ -43,6 +43,7 @@ export default function InventoryTable() {
           const row = info.row.original as Row;
           return (
             <input
+              className="input w-20"
               aria-label={`qty-${row.id}`}
               type="number"
               defaultValue={row.quantity}
@@ -51,7 +52,6 @@ export default function InventoryTable() {
                   patchItem({ id: row.id, data: { quantity: Number(e.currentTarget.value) } })
                 )
               }
-              style={{ width: 80 }}
             />
           );
         },
@@ -67,7 +67,11 @@ export default function InventoryTable() {
         cell: (info) => {
           const row = info.row.original as Row;
           return (
-            <button onClick={() => dispatch(removeItem(row.id))}>Delete</button>
+            <div className="table-actions">
+              <button className="btn danger" onClick={() => dispatch(removeItem(row.id))}>
+                Delete
+              </button>
+            </div>
           );
         },
       },
@@ -90,58 +94,64 @@ export default function InventoryTable() {
       <h2>Inventory</h2>
       {status === 'loading' && <p>Loading...</p>}
 
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-        <thead>
-          {table.getHeaderGroups().map((hg) => (
-            <tr key={hg.id}>
-              {hg.headers.map((header) => (
-                <th
-                  key={header.id}
-                  style={{ borderBottom: '1px solid #ccc', textAlign: 'left', cursor: header.column.getCanSort() ? 'pointer' : 'default' }}
-                  onClick={header.column.getToggleSortingHandler()}
-                  aria-sort={
-                    header.column.getIsSorted() === 'asc'
-                      ? 'ascending'
+      <div className="table-container">
+        <table className="data-table">
+          <thead>
+            {table.getHeaderGroups().map((hg) => (
+              <tr key={hg.id}>
+                {hg.headers.map((header) => (
+                  <th
+                    key={header.id}
+                    className={header.column.getCanSort() ? 'sortable' : undefined}
+                    onClick={header.column.getToggleSortingHandler()}
+                    aria-sort={
+                      header.column.getIsSorted() === 'asc'
+                        ? 'ascending'
+                        : header.column.getIsSorted() === 'desc'
+                        ? 'descending'
+                        : 'none'
+                    }
+                    title={header.column.getCanSort() ? 'Click to sort' : undefined}
+                  >
+                    {flexRender(header.column.columnDef.header, header.getContext())}
+                    {header.column.getIsSorted() === 'asc'
+                      ? ' ▲'
                       : header.column.getIsSorted() === 'desc'
-                      ? 'descending'
-                      : 'none'
-                  }
-                  title={header.column.getCanSort() ? 'Click to sort' : undefined}
-                >
-                  {flexRender(header.column.columnDef.header, header.getContext())}
-                  {header.column.getIsSorted() === 'asc' ? ' ▲' : header.column.getIsSorted() === 'desc' ? ' ▼' : ''}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} style={{ padding: '6px 4px', borderBottom: '1px solid #eee' }}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                      ? ' ▼'
+                      : ''}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map((row) => (
+              <tr key={row.id}>
+                {row.getVisibleCells().map((cell) => (
+                  <td key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-      <div style={{ marginTop: 8, display: 'flex', alignItems: 'center', gap: 8 }}>
-        <button onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
+      <div className="pagination">
+        <button className="btn" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
           Previous
         </button>
-        <button onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+        <button className="btn" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
           Next
         </button>
-        <span style={{ marginLeft: 8 }}>
+        <span>
           Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
         </span>
         <select
+          className="input"
           value={table.getState().pagination.pageSize}
           onChange={(e) => table.setPageSize(Number(e.target.value))}
-          style={{ marginLeft: 8 }}
         >
           {[5, 10, 20, 50].map((ps) => (
             <option key={ps} value={ps}>

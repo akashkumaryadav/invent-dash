@@ -17,10 +17,11 @@ export default function SearchBar() {
 
   return (
     <input
+      className="input w-1/12"
       placeholder="Search by name or category..."
       value={local}
       onChange={(e) => setLocal(e.target.value)}
-      style={{ width: '100%', padding: 8, marginBottom: 8 }}
+      aria-label="Search items"
     />
   );
 }
