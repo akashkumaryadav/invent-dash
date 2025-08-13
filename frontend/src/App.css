@@ -43,10 +43,25 @@ body {
   box-sizing: border-box;
 }
 
+@media (max-width: 720px) {
+  .app-shell {
+    padding: 10px;
+    gap: 10px;
+  }
+}
+
 .app-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+@media (max-width: 720px) {
+  .app-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
 }
 
 .header-actions {
@@ -61,11 +76,23 @@ body {
   letter-spacing: 0.3px;
 }
 
+@media (max-width: 720px) {
+  .app-title {
+    font-size: 1.1rem;
+  }
+}
+
 .layout-switcher {
   display: inline-flex;
   gap: 8px;
   flex-wrap: nowrap;
   white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .layout-switcher {
+    flex-wrap: wrap;
+  }
 }
 
 .btn {
@@ -188,6 +215,12 @@ input[disabled], select[disabled], button[disabled] {
   flex-direction: column;
 }
 
+@media (max-width: 720px) {
+  .panel {
+    padding: 6px;
+  }
+}
+
 .panel-body {
   flex: 1 1 auto;
   min-height: 0;
@@ -207,6 +240,12 @@ table.data-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.95rem;
+}
+
+@media (max-width: 720px) {
+  table.data-table {
+    font-size: 0.9rem;
+  }
 }
 
 .data-table th, .data-table td {

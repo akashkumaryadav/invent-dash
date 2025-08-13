@@ -42,6 +42,33 @@ function App() {
     localStorage.setItem('theme', theme);
   }, [theme]);
 
+  // responsive: force stacked on small screens, preserve user choice otherwise
+  const [isSmall, setIsSmall] = useState<boolean>(() =>
+    typeof window !== 'undefined'
+      ? window.matchMedia('(max-width: 720px)').matches
+      : false
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 720px)');
+    const onChange = (e: MediaQueryListEvent) => setIsSmall(e.matches);
+    // initial sync
+    setIsSmall(mq.matches);
+    // subscribe
+    if (typeof mq.addEventListener === 'function') {
+      mq.addEventListener('change', onChange);
+      return () => mq.removeEventListener('change', onChange);
+    } else {
+      // Safari fallback (deprecated addListener/removeListener)
+      const legacyListener: (this: MediaQueryList, ev: MediaQueryListEvent) => void = (e) =>
+        setIsSmall(e.matches);
+      mq.addListener(legacyListener);
+      return () => {
+        mq.removeListener(legacyListener);
+      };
+    }
+  }, []);
+
   const SideBySide = ({ swapped = false }: { swapped?: boolean }) => (
     <PanelGroup direction="horizontal" className="panel-group" autoSaveId="main-horizontal">
       <Panel minSize={20} defaultSize={60} className="panel">
@@ -131,9 +158,15 @@ function App() {
       </section>
 
       <main className="workspace">
-        {layout === 'side-by-side' && <SideBySide />}
-        {layout === 'side-by-side-swapped' && <SideBySide swapped />}
-        {layout === 'stacked' && <Stacked />}
+        {isSmall ? (
+          <Stacked />
+        ) : (
+          <>
+            {layout === 'side-by-side' && <SideBySide />}
+            {layout === 'side-by-side-swapped' && <SideBySide swapped />}
+            {layout === 'stacked' && <Stacked />}
+          </>
+        )}
       </main>
     </div>
   );
