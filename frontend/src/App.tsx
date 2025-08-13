@@ -3,7 +3,7 @@ import './App.css';
 import SearchBar from './components/SearchBar';
 import AddItemForm from './components/AddItemForm';
 import InventoryTable from './components/InventoryTable';
-import CategoryChart from './components/CategoryChart';
+import ChartsBoard from './components/ChartsBoard';
 import { useAppDispatch } from './hooks';
 import { loadItems } from './slices/itemsSlice';
 import { initSocket } from './socket';
@@ -83,7 +83,7 @@ function App() {
     <PanelGroup direction="horizontal" className="panel-group" autoSaveId="main-horizontal">
       <Panel minSize={20} defaultSize={60} className="panel">
         <div className="panel-body">
-          {swapped ? <CategoryChart type={chartType} /> : <InventoryTable />}
+          {swapped ? <ChartsBoard defaultType={chartType} /> : <InventoryTable />}
         </div>
       </Panel>
       <PanelResizeHandle
@@ -95,7 +95,7 @@ function App() {
       />
       <Panel minSize={20} defaultSize={40} className="panel">
         <div className="panel-body">
-          {swapped ? <InventoryTable /> : <CategoryChart type={chartType} />}
+          {swapped ? <InventoryTable /> : <ChartsBoard defaultType={chartType} />}
         </div>
       </Panel>
     </PanelGroup>
@@ -117,7 +117,7 @@ function App() {
       />
       <Panel minSize={20} defaultSize={40} className="panel">
         <div className="panel-body">
-          <CategoryChart type={chartType} />
+          <ChartsBoard defaultType={chartType} />
         </div>
       </Panel>
     </PanelGroup>
