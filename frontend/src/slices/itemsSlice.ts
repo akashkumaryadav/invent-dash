@@ -68,7 +68,9 @@ const itemsSlice = createSlice({
         state.error = action.error.message;
       })
       .addCase(createItem.fulfilled, (state, action) => {
-        state.items.push(action.payload);
+        const idx = state.items.findIndex((i) => i.id === action.payload.id);
+        if (idx === -1) state.items.push(action.payload);
+        else state.items[idx] = action.payload;
       })
       .addCase(patchItem.fulfilled, (state, action) => {
         const idx = state.items.findIndex((i) => i.id === action.payload.id);
