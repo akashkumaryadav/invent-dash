@@ -42,6 +42,16 @@ function App() {
     localStorage.setItem('theme', theme);
   }, [theme]);
 
+  // chart type
+  type ChartType = 'bar' | 'line' | 'pie' | 'doughnut';
+  const [chartType, setChartType] = useState<ChartType>(() => {
+    const saved = localStorage.getItem('chartType') as ChartType | null;
+    return saved || 'bar';
+  });
+  useEffect(() => {
+    localStorage.setItem('chartType', chartType);
+  }, [chartType]);
+
   // responsive: force stacked on small screens, preserve user choice otherwise
   const [isSmall, setIsSmall] = useState<boolean>(() =>
     typeof window !== 'undefined'
@@ -73,7 +83,7 @@ function App() {
     <PanelGroup direction="horizontal" className="panel-group" autoSaveId="main-horizontal">
       <Panel minSize={20} defaultSize={60} className="panel">
         <div className="panel-body">
-          {swapped ? <CategoryChart /> : <InventoryTable />}
+          {swapped ? <CategoryChart type={chartType} /> : <InventoryTable />}
         </div>
       </Panel>
       <PanelResizeHandle
@@ -85,7 +95,7 @@ function App() {
       />
       <Panel minSize={20} defaultSize={40} className="panel">
         <div className="panel-body">
-          {swapped ? <InventoryTable /> : <CategoryChart />}
+          {swapped ? <InventoryTable /> : <CategoryChart type={chartType} />}
         </div>
       </Panel>
     </PanelGroup>
@@ -107,7 +117,7 @@ function App() {
       />
       <Panel minSize={20} defaultSize={40} className="panel">
         <div className="panel-body">
-          <CategoryChart />
+          <CategoryChart type={chartType} />
         </div>
       </Panel>
     </PanelGroup>
@@ -141,6 +151,20 @@ function App() {
               Stacked
             </button>
           </div>
+          <label style={{ display: 'none' }} htmlFor="chartType">Chart type</label>
+          <select
+            id="chartType"
+            className="input"
+            value={chartType}
+            onChange={(e) => setChartType(e.target.value as ChartType)}
+            title="Select chart type"
+            aria-label="Select chart type"
+          >
+            <option value="bar">Bar</option>
+            <option value="line">Line</option>
+            <option value="pie">Pie</option>
+            <option value="doughnut">Doughnut</option>
+          </select>
           <button
             className="btn theme-toggle"
             onClick={() => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))}
