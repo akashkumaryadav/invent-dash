@@ -88,7 +88,7 @@ export default function CategoryChart({ type }: Props) {
           {
             label: 'Quantity per Category',
             data: values,
-            backgroundColor: 'rgba(75, 192, 192, 0.5)',
+            backgroundColor: labels.map((_, i) => palette[i % palette.length]),
           },
         ],
       };
