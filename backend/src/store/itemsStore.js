@@ -37,4 +37,16 @@ function clear() {
   idSeq = 1;
 }
 
-module.exports = { list, create, update, remove, clear };
+function seedDefaults(defaults = []) {
+  if (!Array.isArray(defaults) || defaults.length === 0) return;
+  for (const it of defaults) {
+    const { name, quantity, category } = it;
+    // Avoid duplicates by name+category if already present
+    const exists = items.some((x) => x.name === name && x.category === category);
+    if (!exists) {
+      create({ name, quantity, category });
+    }
+  }
+}
+
+module.exports = { list, create, update, remove, clear, seedDefaults };

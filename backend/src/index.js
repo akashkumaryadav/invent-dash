@@ -5,6 +5,7 @@ const cors = require('cors');
 const { Server } = require('socket.io');
 const itemsRouter = require('./routes/items');
 const auth = require('./middleware/auth');
+const store = require('./store/itemsStore');
 
 const app = express();
 const server = http.createServer(app);
@@ -29,6 +30,17 @@ const PORT = process.env.PORT || 4000;
 
 function start() {
   return new Promise((resolve) => {
+    // Seed demo data if empty
+    if (store.list().length === 0) {
+      store.seedDefaults([
+        { name: 'Widget A', quantity: 12, category: 'Hardware' },
+        { name: 'Widget B', quantity: 7, category: 'Hardware' },
+        { name: 'Sprocket X', quantity: 20, category: 'Components' },
+        { name: 'Sprocket Y', quantity: 5, category: 'Components' },
+        { name: 'Tape Roll', quantity: 30, category: 'Supplies' },
+        { name: 'Label Pack', quantity: 18, category: 'Supplies' },
+      ]);
+    }
     server.listen(PORT, () => {
       console.log(`API listening on http://localhost:${PORT}`);
       resolve(server);
